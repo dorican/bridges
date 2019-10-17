@@ -17,6 +17,8 @@
             Проект: {{ user.project|title }}
         </p>
         <br>
+        <p>Хотите <a href="{% url 'auth:password_change' %}">изменить пароль профиля</a>?</p>
+        <br>
         <p>Можете <a href="{% url 'auth:logout' %}">выйти с сайта</a>.</p>
     {% else %}
         <h4 class="margin-bottom-15" style="text-align: center;">Вы не авторизованы,<br>либо аккаунт не активирован</h4>

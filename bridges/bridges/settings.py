@@ -137,5 +137,6 @@ EMAIL_FILE_PATH = 'tmp/email-messages/'
 
 # укажем модель пользователя, используемую подсистемой разграничения доступа Django
 AUTH_USER_MODEL = 'authapp.Users'
+LOGIN_URL = 'auth/login/'
 
 # Authapp end ===================================================

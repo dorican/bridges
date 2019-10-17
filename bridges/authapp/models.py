@@ -94,6 +94,9 @@ class Users(AbstractUser):
 
 
 class CompanyUsers(models.Model):
+    """U-Gin: это связь модели компании и работника(юзера), нужна для вывода списка работников компании и наоборот.
+    Нужна отдельная модель чтобы сохранять все старые места работы и знатьс какого по какое число он работал
+    и на какой должности"""
     company = models.ForeignKey(Company, on_delete=models.PROTECT, verbose_name='Компания', blank=True)
     user = models.ForeignKey(Users, on_delete=models.PROTECT, verbose_name='Сотрудник', blank=True,
                              related_name='company')

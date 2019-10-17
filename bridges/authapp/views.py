@@ -1,8 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
 from django.views.generic.detail import DetailView
-from .forms import RegisterUserForm, LoginUserForm
+from .forms import RegisterUserForm, LoginUserForm, UserChangePasswordForm
 
 from .models import Users
 
@@ -40,6 +41,24 @@ class UserProfileView(DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         return context
+
+
+class UserChangePasswordView(PasswordChangeView):
+    form_class = UserChangePasswordForm
+    extra_context = {
+        'page_title': 'Изменение пароля',
+        'bred_title': 'Изменение пароля'
+    }
+    template_name = 'authapp/password_change.html'
+    success_url = reverse_lazy('auth:password_change_done')
+
+
+class UserChangePasswordDoneView(PasswordChangeDoneView):
+    extra_context = {
+        'page_title': 'Изменение пароля',
+        'bred_title': 'Изменение пароля'
+    }
+    template_name = 'authapp/password_change_done.html'
 
 
 class UserLogoutView(LogoutView):
