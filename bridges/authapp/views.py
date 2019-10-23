@@ -1,10 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
 from django.views.generic.detail import DetailView
-from .forms import RegisterUserForm, LoginUserForm, UserChangePasswordForm
 
+from .forms import RegisterUserForm, LoginUserForm, UserChangePasswordForm
 from .models import Users
 
 
@@ -30,7 +31,9 @@ class UserLoginView(LoginView):
     template_name = 'authapp/login.html'
 
 
-class UserProfileView(DetailView):
+class UserProfileView(LoginRequiredMixin, DetailView):
+    login_url = '/auth/login/'
+    redirect_field_name = 'redirect_to'
     model = Users
     extra_context = {
         'page_title': 'Профиль пользователя',
@@ -43,7 +46,9 @@ class UserProfileView(DetailView):
         return context
 
 
-class UserChangePasswordView(PasswordChangeView):
+class UserChangePasswordView(LoginRequiredMixin, PasswordChangeView):
+    login_url = '/auth/login/'
+    redirect_field_name = 'redirect_to'
     form_class = UserChangePasswordForm
     extra_context = {
         'page_title': 'Изменение пароля',
@@ -53,7 +58,9 @@ class UserChangePasswordView(PasswordChangeView):
     success_url = reverse_lazy('auth:password_change_done')
 
 
-class UserChangePasswordDoneView(PasswordChangeDoneView):
+class UserChangePasswordDoneView(LoginRequiredMixin, PasswordChangeDoneView):
+    login_url = '/auth/login/'
+    redirect_field_name = 'redirect_to'
     extra_context = {
         'page_title': 'Изменение пароля',
         'bred_title': 'Изменение пароля'

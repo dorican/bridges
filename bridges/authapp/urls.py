@@ -1,7 +1,5 @@
 from django.urls import path
-
-from .views import RegisterUserView, UserLoginView, UserProfileView, UserLogoutView, UserChangePasswordView, \
-    UserChangePasswordDoneView
+from .views import *
 
 app_name = 'authapp'
 
