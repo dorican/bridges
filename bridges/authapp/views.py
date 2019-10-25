@@ -1,11 +1,11 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView, \
+    PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.views.generic.detail import DetailView
 
-from .forms import RegisterUserForm, LoginUserForm, UserChangePasswordForm
+from .forms import *
 from .models import Users
 
 
@@ -66,6 +66,43 @@ class UserChangePasswordDoneView(LoginRequiredMixin, PasswordChangeDoneView):
         'bred_title': 'Изменение пароля'
     }
     template_name = 'authapp/password_change_done.html'
+
+
+class UserResetPasswordView(PasswordResetView):
+    form_class = UserResetPasswordForm
+    extra_context = {
+        'page_title': 'Сброс пароля',
+        'bred_title': 'Сброс пароля'
+    }
+    template_name = 'authapp/password_reset.html'
+    email_template_name = 'authapp/reset_email.html'
+    success_url = reverse_lazy('auth:password_reset_sent_mail')
+
+
+class UserResetPasswordSentMailView(PasswordResetDoneView):
+    extra_context = {
+        'page_title': 'Сброс пароля',
+        'bred_title': 'Сброс пароля'
+    }
+    template_name = 'authapp/password_reset_sent_mail.html'
+
+
+class UserResetPasswordConfirmView(PasswordResetConfirmView):
+    form_class = UserSetNewPasswordForm
+    extra_context = {
+        'page_title': 'Установка нового пароля',
+        'bred_title': 'Установка пароля'
+    }
+    template_name = 'authapp/password_reset_confirm.html'
+    success_url = reverse_lazy('auth:password_reset_complete')
+
+
+class UserResetPasswordCompleteView(PasswordResetCompleteView):
+    extra_context = {
+        'page_title': 'Установка нового пароля',
+        'bred_title': 'Установка пароля'
+    }
+    template_name = 'authapp/password_reset_complete.html'
 
 
 class UserLogoutView(LogoutView):

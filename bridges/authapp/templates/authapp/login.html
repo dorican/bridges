@@ -28,5 +28,7 @@
         </form>
         <br>
         <p>Либо можете <a href="{% url 'auth:register' %}">зарегистрироваться</a>.</p>
+        <br>
+        <p><a href="{% url 'auth:password_reset' %}">Не помните пароль?</a></p>
     {% endif %}
 {% endblock %}

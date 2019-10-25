@@ -130,13 +130,19 @@ EMAIL_HOST_USER = 'bridges@bridges.local'  # имя пользователя
 EMAIL_HOST_PASSWORD = 'bridges'  # пароль от ящика
 EMAIL_USE_SSL = False  # использование протокола шифрования
 # DEFAULT_FROM_EMAIL = 'info@example.com'  # email, с которого будет отправлено письмо
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = 'tmp/email-messages/'
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+# EMAIL_FILE_PATH = 'tmp/email-messages/'
 
 # Authapp start =================================================
 
 # укажем модель пользователя, используемую подсистемой разграничения доступа Django
 AUTH_USER_MODEL = 'authapp.Users'
+
+# страница по умолчанию для авторизации
 LOGIN_URL = 'auth/login/'
+
+# настройки для отправки писем, в частности для сброса пароля
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "authapp/sent_emails")  # в эту папку складываются отправленные письма
 
 # Authapp end ===================================================

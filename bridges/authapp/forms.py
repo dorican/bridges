@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 
 from .models import Users
 
@@ -43,4 +43,23 @@ class UserChangePasswordForm(PasswordChangeForm):
     class Meta:
         model = Users
         UserChangePasswordFormFields = ('old_password', 'new_password1', 'new_password2')
+        exclude = []
+
+
+class UserResetPasswordForm(PasswordResetForm):
+    email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Введите электронную почту*'}))
+
+    class Meta:
+        model = Users
+        AuthenticationFormFields = ('email',)
+        exclude = []
+
+
+class UserSetNewPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Придумайте новый пароль*'}))
+    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'и повторите новый пароль*'}))
+
+    class Meta:
+        model = Users
+        UserSetNewPasswordFormFields = ('new_password1', 'new_password2')
         exclude = []
