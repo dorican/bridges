@@ -16,7 +16,11 @@ class TestAuthappUrlsCase(TestCase):
     def test_authapp_urls(self):
         response = self.client.get('/auth/register/')
         self.assertEqual(response.status_code, 200)
+        response = self.client.get('/auth/register/done/')
+        self.assertEqual(response.status_code, 200)
         response = self.client.get('/auth/login/')
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get('/auth/logout/')
         self.assertEqual(response.status_code, 200)
         response = self.client.get('/auth/profile/1/')
         self.assertEqual(response.status_code, 302)
@@ -24,7 +28,11 @@ class TestAuthappUrlsCase(TestCase):
         self.assertEqual(response.status_code, 302)
         response = self.client.get('/auth/profile/password_change_done/')
         self.assertEqual(response.status_code, 302)
-        response = self.client.get('/auth/logout/')
+        response = self.client.get('/auth/profile/password_reset/')
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get('/auth/profile/password_reset/sent_mail/')
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get('/auth/profile/password_reset/complete/')
         self.assertEqual(response.status_code, 200)
 
     def tearDown(self):
@@ -75,7 +83,7 @@ class TestAuthappLoginLogoutCase(TestCase):
         call_command('sqlsequencereset', 'authapp')
 
 
-class TestAuthappRegistrationCase(TestCase):
+class AuthappRegistrationTestCase(TestCase):
     """ Проверяем регистрацию нового пользователя на сайте """
 
     def setUp(self):
@@ -90,12 +98,12 @@ class TestAuthappRegistrationCase(TestCase):
         new_user = {'username': 'new_user', 'password': '123Parol789', 'phone': '+7(123)456-78-90'}
         response = self.client.post('/auth/register/', data=new_user)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/auth/login/')
+        self.assertEqual(response.url, '/auth/register/done/')
 
-        # сначала написать валидатор данных - попытка регистрации пользователя с ошибочными данными
-        # new_user = {'username': '1', 'password': '2', 'phone': '3'}
-        # response = self.client.post('/auth/register/', data=new_user)
-        # self.assertContains(response, 'Зарегистрироваться на сайте', status_code=200)
+        # попытка регистрации пользователя с ошибочными данными
+        new_user = {'username': '1', 'password': '2', 'phone': '3'}
+        response = self.client.post('/auth/register/', data=new_user)
+        self.assertContains(response, 'Зарегистрироваться на сайте', status_code=200)
 
         # попытка повторной регистрации существующего пользователя
         new_user = {'username': 'polzovatel', 'password': '123polzovatel789', 'phone': '+7(123)456-78-90'}
