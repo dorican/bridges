@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView, \
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
@@ -19,7 +20,15 @@ class RegisterUserView(CreateView):
         'bred_title': 'Регистрация'
     }
     template_name = 'authapp/register.html'
-    success_url = reverse_lazy('auth:login')
+    success_url = reverse_lazy('auth:register_done')
+
+
+class RegisterUserDoneView(TemplateView):
+    extra_context = {
+        'page_title': 'Регистрация на сайте',
+        'bred_title': 'Регистрация'
+    }
+    template_name = 'authapp/register_done.html'
 
 
 class UserLoginView(LoginView):

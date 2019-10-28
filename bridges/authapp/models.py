@@ -72,8 +72,8 @@ class Users(AbstractUser):
         ('female', 'женщина'),
     )
     username = models.CharField(verbose_name='Логин*', max_length=50, unique=True)  # переопределили из-за verbose_name
-    first_name = models.CharField(verbose_name='Имя', max_length=50)
-    last_name = models.CharField(verbose_name='Фамилия', max_length=50)
+    first_name = models.CharField(verbose_name='Имя', max_length=50, default='', null=True, blank=True)
+    last_name = models.CharField(verbose_name='Фамилия', max_length=50, default='', null=True, blank=True)
     patronymic = models.CharField(verbose_name='Отчество', max_length=50, default='', null=True, blank=True)
     gender = models.CharField(verbose_name='Пол', max_length=6, choices=GENDER_CHOICES, blank=True, null=True)
     birthday = models.DateField(verbose_name='День рождения', blank=True, null=True)
