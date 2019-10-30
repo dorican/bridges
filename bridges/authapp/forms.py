@@ -40,7 +40,7 @@ class LoginUserForm(AuthenticationForm):
 
 
 class UserChangePasswordForm(PasswordChangeForm):
-    old_password = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Введите старый пароль*'}),
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Введите старый пароль*'}),
                                    min_length=8, max_length=15)
     new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Придумайте новый пароль*'}),
                                     min_length=8, max_length=15)

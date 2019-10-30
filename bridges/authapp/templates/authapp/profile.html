@@ -11,10 +11,6 @@
             День рождения: {{ user.birthday|date:"d.m.Y" }}<br>
             Телефон: {{ user.phone }}<br>
             Эл. почта: {{ user.email }}<br>
-            Город: {{ user.city|title }}<br>
-            Компания: не выводится<br>
-            Должность: {{ user.position|title }}<br>
-            Проект: {{ user.project|title }}
         </p>
         <br>
         <p>Хотите <a href="{% url 'auth:password_change' %}">изменить пароль профиля</a>?</p>

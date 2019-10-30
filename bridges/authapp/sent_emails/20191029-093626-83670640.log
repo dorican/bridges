@@ -1,0 +1,25 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: 
+ =?utf-8?b?0KHQsdGA0L7RgSDQv9Cw0YDQvtC70Y8g0L3QsCBsb2NhbGhvc3Q6ODAwMA==?=
+From: webmaster@localhost
+To: login123@ya.ru
+Date: Tue, 29 Oct 2019 06:36:26 -0000
+Message-ID: <157233098654.6864.3656147278620048447@DESKTOP-KILKVMD.Dlink>
+
+
+
+Здравствуйте!
+
+Вы отправили запрос на сброс пароля.
+
+Чтобы выполнить сброс, пройдите по этой ссылке:
+http://localhost:8000/auth/profile/password_reset/Mg/5az-36ac9d42bebd4c50a716/
+
+-----------------------------------------
+С уважением,
+администрация сайта localhost:8000
+
+
+-------------------------------------------------------------------------------

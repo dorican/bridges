@@ -7,7 +7,7 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView,
 from django.views.generic.detail import DetailView
 
 from .forms import *
-from .models import Users
+from .models import *
 
 
 # Create your views here.
