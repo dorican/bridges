@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
@@ -21,6 +22,13 @@ class RegisterUserView(CreateView):
     }
     template_name = 'authapp/register.html'
     success_url = reverse_lazy('auth:register_done')
+
+    def form_valid(self, form):
+        # проверка валидности reCAPTCHA
+        if self.request.recaptcha_is_valid:
+            form.save()
+            return render(self.request, 'authapp/register_done.html', self.get_context_data())
+        return render(self.request, 'authapp/register.html', self.get_context_data())
 
 
 class RegisterUserDoneView(TemplateView):

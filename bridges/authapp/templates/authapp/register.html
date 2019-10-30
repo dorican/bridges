@@ -14,6 +14,13 @@
         {% for field in form %}
             {{ field.errors }}
         {% endfor %}
+        {% load recaptcha from evileg_core %}
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+        <p>&nbsp;</p>
         <form method="post">
             {% csrf_token %}
             <div class="wprt-contact-form-1">
@@ -26,6 +33,7 @@
                 <span class="wpcf7-form-control-wrap email">
                     {{ form.phone }}
                 </span>
+                {% recaptcha 'form-group' %}
                 <input type="submit" value="Зарегистрироваться">
             </div>
         </form>

@@ -1,4 +1,5 @@
 from django.urls import path
+from evileg_core.decorators import recaptcha
 
 from .views import *
 
@@ -6,7 +7,7 @@ app_name = 'authapp'
 
 urlpatterns = [
     # регистрация пользователя
-    path('register/', RegisterUserView.as_view(), name='register'),
+    path('register/', recaptcha(RegisterUserView.as_view()), name='register'),
     path('register/done/', RegisterUserDoneView.as_view(), name='register_done'),
     # авторизация на сайте
     path('login/', UserLoginView.as_view(), name='login'),

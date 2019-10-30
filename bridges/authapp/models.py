@@ -35,7 +35,6 @@ class FormCompany(models.Model):
 
 class Company(models.Model):
     """модель содержит подробную информацию о компании"""
-
     name = models.CharField(verbose_name='Полное название*', max_length=70)
     short = models.CharField(verbose_name='Короткое название', max_length=30, blank=True, null=True)
     form = models.ForeignKey(FormCompany, on_delete=models.PROTECT, verbose_name='Форма', blank=True, null=True)

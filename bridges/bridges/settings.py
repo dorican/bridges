@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'servicesapp',
     'researchapp',
     'authapp',
+    'evileg_core',
     'partnersapp',
 ]
 
@@ -144,5 +145,9 @@ LOGIN_URL = 'auth/login/'
 # настройки для отправки писем, в частности для сброса пароля
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "authapp/sent_emails")  # в эту папку складываются отправленные письма
+
+# настройки для Google ReCaptcha v2
+GOOGLE_RECAPTCHA_SECRET_KEY = '6LfENMAUAAAAACWVyqA0hD9ESHFpLiAMwWl4aji5'
+GOOGLE_RECAPTCHA_SITE_KEY = '6LfENMAUAAAAANR7392iQWL6RRATo25MeSPK0ray'
 
 # Authapp end ===================================================
