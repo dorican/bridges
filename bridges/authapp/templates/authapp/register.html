@@ -11,7 +11,9 @@
     {% else %}
         <h4 class="margin-bottom-15">Зарегистрироваться на сайте</h4>
         <br>
-        {{ form.errors }}
+        {% for field in form %}
+            {{ field.errors }}
+        {% endfor %}
         <form method="post">
             {% csrf_token %}
             <div class="wprt-contact-form-1">

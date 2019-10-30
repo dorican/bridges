@@ -107,11 +107,13 @@ hr { background-color: #f6f6f6; border: 0; height: 1px; margin-bottom: 20px; }
 ul,
 ol { padding: 0; margin: 0 0 20px 35px; }
 ul { list-style: disc; }
+.errorlist { list-style: none; }
 ol { list-style: decimal; }
 li > ul,
 li > ol { margin-bottom: 0; }
 ul li,
 ol li { line-height: 1.86em; padding: 0.26em 0; }
+.errorlist li { font-style: italic; }
 ul.list-unstyled { margin-left: 0; list-style: none; }
 .list-fixed-icon .fa {
     display: inline-block;

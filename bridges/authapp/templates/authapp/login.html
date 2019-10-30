@@ -12,7 +12,7 @@
     {% else %}
         <h4 class="margin-bottom-15">Войти на сайт</h4>
         <br>
-        {{ form.errors }}
+        {{ form.non_field_errors }}
         <form method="POST" action="{% url 'auth:login' %}">
             {% csrf_token %}
             <div class="wprt-contact-form-1">
