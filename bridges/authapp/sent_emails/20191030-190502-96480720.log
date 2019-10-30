@@ -1,0 +1,25 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: 
+ =?utf-8?b?0KHQsdGA0L7RgSDQv9Cw0YDQvtC70Y8g0L3QsCBsb2NhbGhvc3Q6ODAwMA==?=
+From: webmaster@localhost
+To: info@toptimum.ru
+Date: Wed, 30 Oct 2019 16:05:02 -0000
+Message-ID: <157245150206.11240.6377755831588676302@DESKTOP-KILKVMD.Dlink>
+
+
+
+Здравствуйте!
+
+Вы отправили запрос на сброс пароля.
+
+Чтобы выполнить сброс, пройдите по этой ссылке:
+http://localhost:8000/auth/profile/password_reset/MjE/5b0-eabaa43b46db705d433c/
+
+-----------------------------------------
+С уважением,
+администрация сайта localhost:8000
+
+
+-------------------------------------------------------------------------------

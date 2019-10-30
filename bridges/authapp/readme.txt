@@ -11,6 +11,8 @@ Github-репозиторий проекта https://github.com/Djoongaar/bridge
 Моя ветка разработки приложения https://github.com/Djoongaar/bridges/tree/taras
 Мой профиль на GitHub https://github.com/Toptimum
 
+Видео-демонстрация проекта по ссылке: https://www.loom.com/share/5d21fb703a0e467d8828128c2a7536ec
+
 Проект после запуска (Production): http://185.185.68.218/
 
 ===============================================================================================================
