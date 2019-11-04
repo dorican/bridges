@@ -1,8 +1,22 @@
 from django.db import models
+from imagekit.models import ProcessedImageField
+from pilkit.processors import ResizeToFill
 
 from servicesapp.models import Service
 # --------------------------------   МОДЕЛИ ЕДИНИЦ ИЗМЕРЕНИЙ  -------------------------------------
 from django.urls import reverse
+
+
+def image_upload_to(instance, filename):
+    return 'products_images/product_{0}/{1}'.format(instance.pk, filename)
+
+
+def material_image_upload_to(instance, filename):
+    return 'products_images/material_{0}/{1}'.format(instance.pk, filename)
+
+
+def work_image_upload_to(instance, filename):
+    return 'products_images/work_{0}/{1}'.format(instance.pk, filename)
 
 
 class MeasureTypes(models.Model):
@@ -34,7 +48,9 @@ class TechnicalSolutions(models.Model):
     name = models.CharField(verbose_name='название материала', max_length=128, unique=True)
     slug = models.SlugField(verbose_name='слаг', max_length=128, unique=True)
     measure = models.ForeignKey(MeasureTypes, verbose_name='Единица измерения', on_delete=models.CASCADE, default=1)
-    image = models.ImageField(upload_to='products_images', blank=True)
+    image = ProcessedImageField(verbose_name='картинка продукта', upload_to=image_upload_to,
+                                processors=[ResizeToFill(370, 220)],
+                                default='products_images/default-product-image.png', blank=True)
     alt_desc = models.CharField(verbose_name='alt фотографии', max_length=500, blank=True)
     short_desc = models.TextField(verbose_name='краткое описание материала', blank=True, null=True)
     description = models.TextField(verbose_name='описание материала', blank=True)
@@ -69,7 +85,9 @@ class TechnicalSolutionsImage(models.Model):
     """
     material = models.ForeignKey(TechnicalSolutions, blank=True, null=True, default=None, on_delete=models.CASCADE)
     alt_desc = models.CharField(verbose_name='alt фотографии', max_length=128, blank=True)
-    image = models.ImageField(verbose_name='Фотография', upload_to='products_images', blank=True)
+    image = ProcessedImageField(verbose_name='картинка продукта', upload_to=image_upload_to,
+                                processors=[ResizeToFill(370, 220)],
+                                default='products_images/default-product-image.png', blank=True)
     is_active = models.BooleanField(verbose_name='Показывать', default=True)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
@@ -110,7 +128,9 @@ class Material(models.Model):
     slug = models.SlugField(verbose_name='слаг', max_length=500, unique=True)
     category = models.ForeignKey(MaterialCategory, verbose_name='категория материала', on_delete=models.CASCADE)
     measure = models.ForeignKey(MeasureTypes, verbose_name='Единица измерения', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='products_images', blank=True)
+    image = ProcessedImageField(verbose_name='картинка материала', upload_to=material_image_upload_to,
+                                processors=[ResizeToFill(370, 220)],
+                                default='products_images/default-product-image.png', blank=True)
     alt_desc = models.CharField(verbose_name='alt фотографии', max_length=128, blank=True)
     short_desc = models.CharField(verbose_name='краткое описание материала', max_length=500, blank=True, null=True)
     description = models.TextField(verbose_name='описание материала', blank=True)
@@ -133,7 +153,9 @@ class MaterialImage(models.Model):
     """
     material = models.ForeignKey(Material, blank=True, null=True, default=None, on_delete=models.CASCADE)
     alt_desc = models.CharField(verbose_name='alt фотографии', max_length=128, blank=True)
-    image = models.ImageField(verbose_name='Фотография', upload_to='products_images', blank=True)
+    image = ProcessedImageField(verbose_name='картинка материала', upload_to=material_image_upload_to,
+                                processors=[ResizeToFill(370, 220)],
+                                default='products_images/default-product-image.png', blank=True)
     is_active = models.BooleanField(verbose_name='Показывать', default=True)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
@@ -175,7 +197,9 @@ class Work(models.Model):
     category = models.ForeignKey(WorkCategory, verbose_name='категория работ', on_delete=models.CASCADE)
     measure = models.ForeignKey(MeasureTypes, verbose_name='Единица измерения', on_delete=models.CASCADE)
     materials = models.ManyToManyField(Material, blank=True)
-    image = models.ImageField(upload_to='products_images', blank=True)
+    image = ProcessedImageField(verbose_name='картинка материала', upload_to=work_image_upload_to,
+                                processors=[ResizeToFill(370, 220)],
+                                default='products_images/default-product-image.png', blank=True)
     file = models.FileField(upload_to='products_files', blank=True)
     alt_desc = models.CharField(verbose_name='alt фотографии', max_length=128, blank=True)
     short_desc = models.CharField(verbose_name='краткое описание материала', max_length=500, blank=True, null=True)
@@ -198,7 +222,9 @@ class WorkImage(models.Model):
     """
     work = models.ForeignKey(Work, blank=True, null=True, default=None, on_delete=models.CASCADE)
     alt_desc = models.CharField(verbose_name='alt фотографии', max_length=128, blank=True)
-    image = models.ImageField(verbose_name='Фотография', upload_to='work_images', blank=True)
+    image = ProcessedImageField(verbose_name='картинка материала', upload_to=work_image_upload_to,
+                                processors=[ResizeToFill(370, 220)],
+                                default='products_images/default-work-image.png', blank=True)
     is_active = models.BooleanField(verbose_name='Показывать', default=True)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
