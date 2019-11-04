@@ -169,16 +169,16 @@
                                         <span class="inner"><span class="entry-date">Создан: {{ item.created|date:'d.m.Y' }}</span></span>
                                     </span>
                                         <span class="post-meta-categories item">
-                                        <span class="inner">
-                                        {% if item.project.solutions.all %}
-                                            {% for i in item.project.solutions.all %}
-                                                <a href="{{ i.techsol.get_absolute_url }}" rel="category">{{ i.techsol }}</a>
-                                                {% if not forloop.last %}, {% endif %}
-                                            {% endfor %}
-                                        {% else %}
-                                            <span>Продукты не указаны</span>
-                                        {% endif %}
-                                        </span>
+{#                                        <span class="inner">#}
+{#                                        {% if item.project.solutions.all %}#}
+{#                                            {% for i in item.project.solutions.all %}#}
+{#                                                <a href="{{ i.techsol.get_absolute_url }}" rel="category">{{ i.techsol }}</a>#}
+{#                                                {% if not forloop.last %}, {% endif %}#}
+{#                                            {% endfor %}#}
+{#                                        {% else %}#}
+{#                                            <span>Продукты не указаны</span>#}
+{#                                        {% endif %}#}
+{#                                        </span>#}
                                     </span>
                                     </div>
                                 </div>
