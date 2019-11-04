@@ -160,25 +160,13 @@
                                         </strong></span>
                                     </span>
                                     <span class="post-by-author item">
-                                        <span class="inner"><a href="#" title="" rel="author">{{ item.service }}</a></span>
+                                        <span class="inner"><a href="{{ item.service.get_absolute_url }}" title="" rel="author">{{ item.service }}</a></span>
+                                    </span>
+                                    <span class="post-date item">
+                                        <span class="inner"><a href="{{ item.product.get_absolute_url }}" title="" rel="author">{{ item.product }}</a></span></span>
                                     </span>
                                     <span class="post-date item">
                                         <span class="inner"><span class="entry-date">Создан: {{ item.created|date:'d.m.Y' }}</span></span>
-                                    </span>
-                                    <span class="post-date item">
-                                        <span class="inner"><span class="entry-date">Создан: {{ item.created|date:'d.m.Y' }}</span></span>
-                                    </span>
-                                        <span class="post-meta-categories item">
-{#                                        <span class="inner">#}
-{#                                        {% if item.project.solutions.all %}#}
-{#                                            {% for i in item.project.solutions.all %}#}
-{#                                                <a href="{{ i.techsol.get_absolute_url }}" rel="category">{{ i.techsol }}</a>#}
-{#                                                {% if not forloop.last %}, {% endif %}#}
-{#                                            {% endfor %}#}
-{#                                        {% else %}#}
-{#                                            <span>Продукты не указаны</span>#}
-{#                                        {% endif %}#}
-{#                                        </span>#}
                                     </span>
                                     </div>
                                 </div>
