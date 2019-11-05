@@ -1,4 +1,6 @@
 from django.contrib import admin
+from guardian.admin import GuardedModelAdmin
+
 from .models import CategoryCompany, FormCompany, Company, Users, CompanyUsers
 
 
@@ -28,7 +30,7 @@ class CompanyAdmin(admin.ModelAdmin):
 
 
 @admin.register(Users)
-class UsersAdmin(admin.ModelAdmin):
+class UsersAdmin(GuardedModelAdmin):
     # поля, которые не нужно редактировать в админке
     readonly_fields = ('password', 'is_superuser', 'last_login', 'date_joined')  #'user_permissions', 'groups')
 

@@ -35,6 +35,17 @@ class UsersForEditProfileForm(forms.ModelForm):
         ]
 
 
+class UsersSelfEditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Users
+        fields = [
+            'avatar',
+            'description',
+            'birthday',
+            'email',
+        ]
+
+
 class UsersForCompanyUsersForm(forms.ModelForm):
     class Meta:
         model = Users

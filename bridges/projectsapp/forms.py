@@ -60,8 +60,8 @@ class ProjectDiscussItemForm(forms.ModelForm):
 
 class ProjectDiscussMemberForm(forms.ModelForm):
     class Meta:
-        model = ProjectImage
-        fields = ['image']
+        model = ProjectDiscussMember
+        fields = ['user']
 
 
 class ProjectManagerUpdateFormset(forms.models.BaseInlineFormSet):

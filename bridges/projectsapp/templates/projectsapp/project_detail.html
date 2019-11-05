@@ -44,7 +44,7 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                    {% if request.user.is_superuser %}
+                                    {% if request.user.is_staff %}
                                         <a href="{% url 'projects:gallery_update' object.pk %}">... изменить фотографии</a>
                                     {% endif %}
                                     </div><!-- /.col-md-8 -->
@@ -53,7 +53,7 @@
 
 {#<!- -------------------------------------------- ИНФОРМАЦИЯ О ПРОЕКТЕ ИЗ МОДЕЛИ Project- -------------------------------------------->#}
                                         <h3 class="line-height-normal margin-bottom-10">{{ object.name }}</h3>
-                                        {% if request.user.is_superuser %}
+                                        {% if request.user.is_staff %}
                                             <a href="{% url 'projects:project_update' object.pk %}">
                                                 <i class="fa fa-pencil" aria-hidden="true" style="color: black;"> редактировать</i>
                                             </a>
@@ -104,7 +104,7 @@
                                                     </li>
                                                 {% endfor %}
                                             {% endif %}
-                                            {% if request.user.is_superuser %}
+                                            {% if request.user.is_staff %}
                                                 <li>
                                                     <a href="{% url 'projects:company_create' object.pk %}">
                                                         <i class="fa fa-plus" aria-hidden="true" style="color: black"></i>

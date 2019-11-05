@@ -39,18 +39,25 @@
                                         </div>
                                     </div><!--/.cbp-item -->
                                 </div>
-                                <a class="wprt-button small" href="{% url 'profile_self_user_update' user.pk %}">
-                                    ред. профиль
-                                </a>
-                                <a class="wprt-button small cancel-button" href="{% url 'password_change' %}">
-                                    сменить пароль
-                                </a>
+{#                                {% if request.user.is_staff %}#}
+
+                                    {% if user.is_active %}
+                                        <a class="wprt-button small" href="{% url 'profile_user_update' user.pk %}">
+                                        редактировать профиль пользователя
+                                        </a>
+                                    {% else %}
+                                        <a class="wprt-button icon-flash delete-button" href="{% url 'profile_user_activate' user.pk %}">
+                                        активировать пользователя
+                                        </a>
+                                    {% endif %}
+
+{#                                {% endif %}#}
                             </div><!-- /.col-md-4 -->
 
                             <div class="col-md-8">
                                 <div class="wprt-spacer" data-desktop="0" data-mobi="40" data-smobi="40"></div>
 
-                                <h3 class="line-height-normal margin-bottom-10">О себе:</h3>
+                                <h3 class="line-height-normal margin-bottom-10">О ПОЛЬЗОВАТЕЛЕ:</h3>
                                 <div class="wprt-lines style-1 custom-3">
                                     <div class="line-1"></div>
                                     <div class="line-2"></div>
@@ -83,7 +90,7 @@
                 <div class="post-content-wrap">
                     <h2 class="post-title">
                                         <span class="post-title-inner">
-                                            <a href="#">ПРОЕКТЫ</a>
+                                            <a href="#">ПРОЕКТЫ ПОЛЬЗОВАТЕЛЯ</a>
                                         </span>
                         <div class="wprt-lines style-1 custom-3">
                             <div class="line-1"></div>
@@ -141,7 +148,7 @@
                 <div class="post-content-wrap">
                     <h2 class="post-title">
                                         <span class="post-title-inner">
-                                            <a href="#">ЗАКАЗЫ</a>
+                                            <a href="#">ЗАКАЗЫ ПОЛЬЗОВАТЕЛЯ</a>
                                         </span>
                         <div class="wprt-lines style-1 custom-3">
                             <div class="line-1"></div>

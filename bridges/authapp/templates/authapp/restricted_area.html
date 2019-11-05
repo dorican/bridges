@@ -178,6 +178,49 @@
                 </div><!-- /.post-content-wrap -->
             </article>
 
+
+            {# ------------------------------------------- ПОЛУЧЕНИЕ НОВЫХ ЮЗЕРОВ --------------------------------------------- #}
+            {% if request.user.is_staff %}
+            <article class="hentry">
+                <div class="post-content-wrap">
+                    <h2 class="post-title">
+                                        <span class="post-title-inner">
+                                            <a href="#">НОВЫЕ ПОЛЬЗОВАТЕЛИ</a>
+                                        </span>
+                        <div class="wprt-lines style-1 custom-3">
+                            <div class="line-1"></div>
+                            <div class="line-2"></div>
+                        </div>
+                    </h2><!-- /.post-title -->
+                    {% if inactive_users %}
+                        {% for item in inactive_users %}
+                            <div class="post-meta style-2">
+                                <div class="post-meta-content">
+                                    <div class="post-meta-content-inner">
+                                    <span class="post-by-author item">
+                                        <span class="inner"><strong>
+                                            <a href="{{ item.get_absolute_url }}" title="" rel="author"># {{ item.pk }}</a>
+                                        </strong></span>
+                                    </span>
+                                    <span class="post-by-author item">
+                                        <span class="inner"><a href="{{ item.get_absolute_url }}" title="" rel="author">{{ item.username }}</a></span>
+                                    </span>
+                                    <span class="post-date item">
+                                        <span class="inner"><a href="#" title="" rel="author">{{ item.first_name }}</a></span>
+                                    </span>
+                                    <span class="post-date item">
+                                        <span class="inner"><span class="entry-date">Создан: {{ item.created|date:'d.m.Y' }}</span></span>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div><!-- /.post-meta -->
+                        {% endfor %}
+                    {% else %}
+                        <span>Нет ни одного нового юзера</span>
+                    {% endif %}
+                </div><!-- /.post-content-wrap -->
+            </article>
+        {% endif %}
             <div class="wprt-spacer" data-desktop="80" data-mobi="40" data-smobi="40"></div>
         </div><!-- /#content-wrap -->
     </div><!-- /#main-content -->

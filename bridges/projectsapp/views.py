@@ -1,4 +1,5 @@
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.forms import inlineformset_factory, modelformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -68,7 +69,7 @@ class ProjectCreateView(CreateView):
     template_name = 'projectsapp/gallery_update.html'
 
 
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_staff)
 def project_update(request, pk):
     project = get_object_or_404(Project, pk=pk)
     project_form = ProjectUpdateForm(instance=project)
@@ -87,7 +88,6 @@ def project_update(request, pk):
 
 
 #  ------------------------------------ PROJECT'S SOLUTIONS CRUD ----------------------------------------------
-
 
 class ProjectsSolutionsCreateView(CreateMixin, View):
     form_model = ProjectHasTechnicalSolutions
@@ -268,7 +268,7 @@ class ProjectsManagerDeleteView(DeleteMixin, View):
 #  ------------------------------------ PROJECT'S GALLERY crUd----------------------------------------------
 
 
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_staff)
 def gallery_update(request, pk):
     project = Project.objects.get(pk=pk)
     project_form = ProjectForm(instance=project)
@@ -298,11 +298,12 @@ def gallery_update(request, pk):
 
 
 def project_discuss_items(request, pk):
+    """ добавление сообщения и отображение дискуссии """
     project = Project.objects.get(pk=pk)
     project_discuss_items = ProjectDiscussItem.objects.filter(project_id=pk)
     discuss_users = ProjectDiscussMember.objects.filter(project_id=pk)
     self_user = request.user
-    if discuss_users.filter(user=self_user).exists():
+    if discuss_users.filter(user=self_user).exists(): # если залогиненый юзер есть в группе
         if request.method == 'POST':
             report_form = ProjectDiscussItemForm(data=request.POST)
             if report_form.is_valid():

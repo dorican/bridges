@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'ordersapp',
     'newsapp',
     'imagekit',
+    'guardian',
 ]
 
 MIDDLEWARE = [
@@ -133,7 +134,8 @@ EMAIL_HOST_USER = 'bridges@bridges.local'  # имя пользователя
 EMAIL_HOST_PASSWORD = 'bridges'  # пароль от ящика
 EMAIL_USE_SSL = False  # использование протокола шифрования
 # DEFAULT_FROM_EMAIL = 'info@example.com'  # email, с которого будет отправлено письмо
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_FILE_PATH = 'tmp/email-messages/'
 
 # Authapp start =================================================
@@ -146,4 +148,7 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 # Authapp end ===================================================
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+)

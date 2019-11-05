@@ -80,8 +80,8 @@ class Users(AbstractUser):
     )
     username = models.CharField(verbose_name='Логин*', max_length=50, unique=True)  # переопределили из-за verbose_name
     first_name = models.CharField(verbose_name='Имя', max_length=50)
-    last_name = models.CharField(verbose_name='Фамилия', max_length=50)
     patronymic = models.CharField(verbose_name='Отчество', max_length=50, default='', null=True, blank=True)
+    last_name = models.CharField(verbose_name='Фамилия', max_length=50)
     avatar = ProcessedImageField(verbose_name='Аватар', upload_to=image_upload_to, processors=[ResizeToFill(462, 462)],
                                  default='users/avatar/no_avatar.png', blank=True)
     description = models.TextField(verbose_name='Подробно о себе', max_length=5000, blank=True)
@@ -94,6 +94,9 @@ class Users(AbstractUser):
     class Meta(AbstractUser.Meta):
         verbose_name = "Пользователь"
         ordering = ['-date_joined']
+        permissions = (
+            ('can_change', 'Изменение профиля'),
+        )
 
     def get_self_absolute_url(self):
         return reverse('restricted_area')

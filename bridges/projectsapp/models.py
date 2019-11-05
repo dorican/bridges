@@ -196,6 +196,9 @@ class ProjectManagers(models.Model):
     class Meta:
         verbose_name = 'Участник проекта'
         verbose_name_plural = 'Участники проекта'
+        permissions = (
+            ('project_manager_update', 'Менеджеры проекта'),
+        )
 
 
 class ProjectDiscussMember(models.Model):
