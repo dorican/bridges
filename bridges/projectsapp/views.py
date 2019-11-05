@@ -1,5 +1,6 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import user_passes_test, permission_required
+from django.db.models import Q
 from django.forms import inlineformset_factory, modelformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -30,7 +31,10 @@ class ProjectsList(ListView):
         if self.request.user.is_staff:
             return Project.objects.all()
         else:
-            return Project.objects.filter(status__exact='завершен')
+            return Project.objects.filter(
+                Q(status__exact='завершен') |
+                Q(managers__manager_id=self.request.user.pk)
+            )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -53,7 +57,10 @@ class ProjectRead(DetailView):
         if self.request.user.is_staff:
             return Project.objects.all()
         else:
-            return Project.objects.filter(status__exact='завершен')
+            return Project.objects.filter(
+                Q(status__exact='завершен') |
+                Q(managers__manager_id=self.request.user.pk)
+            )
 
     def get_context_data(self, **kwargs):
         context = super(ProjectRead, self).get_context_data(**kwargs)

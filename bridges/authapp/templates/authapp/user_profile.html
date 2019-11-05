@@ -39,8 +39,7 @@
                                         </div>
                                     </div><!--/.cbp-item -->
                                 </div>
-{#                                {% if request.user.is_staff %}#}
-
+                                {% if request.user.is_staff %}
                                     {% if user.is_active %}
                                         <a class="wprt-button small" href="{% url 'profile_user_update' user.pk %}">
                                         редактировать профиль пользователя
@@ -50,8 +49,7 @@
                                         активировать пользователя
                                         </a>
                                     {% endif %}
-
-{#                                {% endif %}#}
+                                {% endif %}
                             </div><!-- /.col-md-4 -->
 
                             <div class="col-md-8">
