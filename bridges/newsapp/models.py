@@ -4,6 +4,7 @@ from imagekit.models import ProcessedImageField
 from pilkit.processors import ResizeToFill
 
 from productsapp.models import TechnicalSolutions
+from authapp.models import Users
 
 
 # Create your models here.
@@ -39,11 +40,26 @@ class NewsHasTechnicalSolutions(models.Model):
                                 on_delete=models.CASCADE)
     techsol = models.ForeignKey(TechnicalSolutions, verbose_name='Техническое решение', related_name='news',
                                 on_delete=models.CASCADE)
-    value = models.DecimalField(verbose_name='Объем работ', max_digits=18, decimal_places=2)
-    is_active = models.BooleanField(verbose_name='Показывать', default=True)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
     class Meta:
         verbose_name = 'Тех решение проекта'
         verbose_name_plural = 'Тех решения проекта'
+
+class NewsDiscussMember(models.Model):
+    news = models.ForeignKey(News, verbose_name='новость обсуждения', on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, verbose_name='участник обсуждения', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'участник дискусии {}'.format(self.news)
+
+
+class NewsDiscussItem(models.Model):
+    news = models.ForeignKey(News, verbose_name='новость обсуждения', on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, verbose_name='участник обсуждения', on_delete=models.CASCADE)
+    comment = models.TextField(verbose_name='добавить сообщение', max_length=1500, null=True, blank=True)
+    creation_date = models.DateTimeField(verbose_name='создан', auto_now_add=True, auto_now=False)
+
+    def __str__(self):
+        return 'комментарий к дискусии {}'.format(self.news)
