@@ -47,8 +47,11 @@ class NewsListView(ListView):
         context.update({'products': products,
                         'news_category': news_category,
                         'latest_news': latest_news,
-        })
+                        'page_title': 'Новости',
+                        'bred_title': 'Новости'
+                        })
         return context
+
 
 # Create your views here.
 class NewsDetailView(DetailView):
@@ -62,8 +65,8 @@ class NewsDetailView(DetailView):
     template_name = 'newsapp/blog_detail.html'
     extra_context = {}
     extra_context.update({'products': products,
-                        'latest_news': latest_news,
-    })
+                          'latest_news': latest_news,
+                          })
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -97,8 +100,6 @@ class NewsUpdateView(PermissionRequiredMixin, UpdateView):
     extra_context = {}
 
 
-
-
 # Create your views here.
 class NewsDeleteView(PermissionRequiredMixin, DeleteView):
     """docstring for ProductList"""    
@@ -106,5 +107,3 @@ class NewsDeleteView(PermissionRequiredMixin, DeleteView):
 
     template_name = 'newsapp/blog.html'
     extra_context = {}
-
-

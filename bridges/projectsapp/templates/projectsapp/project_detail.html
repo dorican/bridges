@@ -136,14 +136,16 @@
                                                                 <i>,<a href="{{ i.company.get_absolute_url }}"> {{ i.company.form }} {{ i.company.name }}</a></i>
                                                             {% endfor %}
                                                         {% endif %}
+                                                        {% if request.user.is_staff %}
                                                         <a href="{% url 'projects:manager_delete' object.pk item.pk %}">
                                                             <i class="fa fa-ban" aria-hidden="true"
                                                                style="color: red"></i>
                                                         </a>
+                                                        {% endif %}
                                                     </li>
                                                 {% endfor %}
                                             {% endif %}
-                                            {% if request.user.is_superuser %}
+                                            {% if request.user.is_staff %}
                                                 <li>
                                                     <a href="{% url 'projects:manager_create' object.pk %}">
                                                         <i class="fa fa-plus" aria-hidden="true"

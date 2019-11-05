@@ -156,7 +156,7 @@ def profile_self_user_update(request, pk):
 #     return render(request, 'authapp/user_profile_update.html', context)
 
 
-@permission_required('can_change')
+@permission_required('authapp.can_change')
 def profile_user_update(request, pk):
     user = get_object_or_404(Users, pk=pk)
     user_form = UsersForEditProfileForm(instance=user)
@@ -174,7 +174,7 @@ def profile_user_update(request, pk):
     return render(request, 'authapp/user_profile_update.html', context)
 
 
-@permission_required('authapp.can_change')
+@user_passes_test(lambda u: u.is_staff)
 def profile_user_activate(request, pk):
     user = get_object_or_404(Users, pk=pk)
     user_form = UsersForEditProfileForm(instance=user)
