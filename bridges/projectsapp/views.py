@@ -1,20 +1,18 @@
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.decorators import user_passes_test, permission_required
+from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Q
 from django.forms import inlineformset_factory, modelformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
-
+from guardian.decorators import permission_required_or_403
 from projectsapp.utils import CreateMixin, DeleteMixin
 from .forms import *
 from projectsapp.models import ProjectImage, ProjectManagers
 from django.views.generic import View
-from django.views.generic import ListView, DetailView, DeleteView, CreateView
+from django.views.generic import ListView, DetailView, CreateView
 from projectsapp.models import Project, ProjectHasTechnicalSolutions, ProjectCompany
 from authapp.models import Users
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 
-from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 
 #  ------------------------------------ PROJECT'S CRUD ----------------------------------------------
@@ -76,22 +74,24 @@ class ProjectCreateView(CreateView):
     template_name = 'projectsapp/gallery_update.html'
 
 
-@user_passes_test(lambda u: u.is_staff)
 def project_update(request, pk):
     project = get_object_or_404(Project, pk=pk)
-    project_form = ProjectUpdateForm(instance=project)
-    if request.method == 'POST':
-        project_form = ProjectUpdateForm(request.POST, request.FILES, instance=project)
-        if project_form.is_valid():
-            project_form.save()
-            return HttpResponseRedirect(project.get_absolute_url())
-    context = {
-        'project_form': project_form,
-        'page_title': 'Редактирование основной информации',
-        'bred_title': 'Обновление проекта',
-        'project': project
-    }
-    return render(request, 'projectsapp/gallery_update.html', context)
+    if request.user.has_perm('change_project', project):
+        project_form = ProjectUpdateForm(instance=project)
+        if request.method == 'POST':
+            project_form = ProjectUpdateForm(request.POST, request.FILES, instance=project)
+            if project_form.is_valid():
+                project_form.save()
+                return HttpResponseRedirect(project.get_absolute_url())
+        context = {
+            'project_form': project_form,
+            'page_title': 'Редактирование основной информации',
+            'bred_title': 'Обновление проекта',
+            'project': project
+        }
+        return render(request, 'projectsapp/gallery_update.html', context)
+    else:
+        raise Http404
 
 
 #  ------------------------------------ PROJECT'S SOLUTIONS CRUD ----------------------------------------------

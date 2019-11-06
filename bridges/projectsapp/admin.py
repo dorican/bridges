@@ -1,4 +1,5 @@
 from django.contrib import admin
+from guardian.admin import GuardedModelAdmin
 
 from .models import *
 
@@ -35,7 +36,7 @@ class ProjectDiscussMemberInline(admin.TabularInline):
 
 
 @admin.register(Project)
-class ProjectAdmin(admin.ModelAdmin):
+class ProjectAdmin(GuardedModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     list_display = ('name', 'city',)
     list_display_links = ('name', 'city',)
@@ -61,3 +62,9 @@ class ProjectAdmin(admin.ModelAdmin):
 class ProjectManagersAdmin(admin.ModelAdmin):
     list_display = ('manager',)
     list_display_links = ('manager',)
+
+
+@admin.register(ProjectCompany)
+class ProjectCompanyAdmin(admin.ModelAdmin):
+    list_display = ('company',)
+    list_display_links = ('company',)

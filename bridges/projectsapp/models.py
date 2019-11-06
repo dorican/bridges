@@ -1,9 +1,10 @@
 import os
 
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 from django.utils.text import slugify
+from guardian.shortcuts import assign_perm
 from imagekit.models import ProcessedImageField
 from pilkit.processors import ResizeToFill
 from transliterate import translit
@@ -77,6 +78,10 @@ class Project(models.Model):
         ordering = ('-updated',)
         verbose_name = 'Проект'
         verbose_name_plural = 'Проекты'
+        default_permissions = ('add', 'change', 'delete')
+        # permissions = (
+        #     ('project_update', 'Update project'),
+        # )
 
 
 def pre_save_map_mark(sender, instance, *args, **kwargs):
@@ -196,9 +201,22 @@ class ProjectManagers(models.Model):
     class Meta:
         verbose_name = 'Участник проекта'
         verbose_name_plural = 'Участники проекта'
-        permissions = (
-            ('project_manager_update', 'Менеджеры проекта'),
-        )
+
+
+def project_managers_post_save(sender, instance, created, **kwargs):
+    """
+    Дает права на изменение профиля проекта после появление менеджера в связанной модели.
+    """
+    manager = instance.manager
+    project = instance.project
+    if manager.is_active:
+        # from authapp.models import Users
+        # proj = Project.objects.get(pk=project.pk)
+        # user = Users.objects.get(pk=manager.pk)
+        assign_perm('projectsapp.change_project', manager, project)
+
+
+post_save.connect(project_managers_post_save, sender=ProjectManagers)
 
 
 class ProjectDiscussMember(models.Model):
