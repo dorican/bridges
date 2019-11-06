@@ -1,10 +1,10 @@
 import os
 
 from django.db import models
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save, post_save, post_delete
 from django.urls import reverse
 from django.utils.text import slugify
-from guardian.shortcuts import assign_perm
+from guardian.shortcuts import assign_perm, remove_perm
 from imagekit.models import ProcessedImageField
 from pilkit.processors import ResizeToFill
 from transliterate import translit
@@ -210,13 +210,23 @@ def project_managers_post_save(sender, instance, created, **kwargs):
     manager = instance.manager
     project = instance.project
     if manager.is_active:
-        # from authapp.models import Users
-        # proj = Project.objects.get(pk=project.pk)
-        # user = Users.objects.get(pk=manager.pk)
         assign_perm('projectsapp.change_project', manager, project)
 
 
 post_save.connect(project_managers_post_save, sender=ProjectManagers)
+
+
+def project_managers_post_delete(sender, instance, **kwargs):
+    """
+    Дает права на изменение профиля проекта после появление менеджера в связанной модели.
+    """
+    manager = instance.manager
+    project = instance.project
+    if manager.is_active:
+        remove_perm('projectsapp.change_project', manager, project)
+
+
+post_delete.connect(project_managers_post_delete, sender=ProjectManagers)
 
 
 class ProjectDiscussMember(models.Model):
