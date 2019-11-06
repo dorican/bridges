@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
 from authapp.models import Users
@@ -31,12 +31,15 @@ class CreateMixin:
 
     def get(self, request, project_pk):
         project = Project.objects.get(pk=project_pk)
-        form = self.form(initial={"project": project})
-        context = {
-            'form': form,
-            'project': project
-        }
-        return render(request, template_name=self.template, context=context)
+        if request.user.has_perm('change_project', project):
+            form = self.form(initial={"project": project})
+            context = {
+                'form': form,
+                'project': project
+            }
+            return render(request, template_name=self.template, context=context)
+        else:
+            raise Http404
 
     def post(self, request, project_pk):
         project = Project.objects.get(pk=project_pk)

@@ -165,11 +165,11 @@
                                             {% endif %}
                                             <div class="wprt-spacer" data-desktop="15" data-mobi="15"
                                                  data-smobi="15"></div>
-                                            {% if request.user.is_staff %}
-                                                <a href="{% url 'projects:project_discuss_items' object.pk %}">
-                                                    Обсуждение проекта
-                                                </a>
-                                            {% endif %}
+{#                                            {% if request.user.is_staff %}#}
+{#                                                <a href="{% url 'projects:project_discuss_items' object.pk %}">#}
+{#                                                    Обсуждение проекта#}
+{#                                                </a>#}
+{#                                            {% endif %}#}
                                     {% endif %}
                                     </div>
                                     <div class="col-md-12">
@@ -184,13 +184,13 @@
                         <section class="wprt-section">
                             <div class="container">
                                 <div class='row'>
-                                    <div class="col-md-12">
-                                        <h2 class="text-center margin-bottom-10">Работа над проектом</h2>
-                                        <div class="wprt-lines style-2 custom-1">
-                                            <div class="line-1"></div>
-                                        </div>
-                                        <div class="wprt-spacer" data-desktop="20" data-mobi="40" data-smobi="40"></div>
-                                    </div>
+{#                                    <div class="col-md-12">#}
+{#                                        <h2 class="text-center margin-bottom-10">Работа над проектом</h2>#}
+{#                                        <div class="wprt-lines style-2 custom-1">#}
+{#                                            <div class="line-1"></div>#}
+{#                                        </div>#}
+{#                                        <div class="wprt-spacer" data-desktop="20" data-mobi="40" data-smobi="40"></div>#}
+{#                                    </div>#}
                                     <div class="col-md-12">
                                         <div class="wprt-toggle active style-1">
                                             <h3 class="toggle-title">Технические решения</h3>
@@ -198,23 +198,23 @@
                                                 <table class="tab-content">
                                                     <tr>
                                                         <td style="text-align: center; font-weight: bold; width: 40%;">
-                                                            Наименование работ и конструкций
+                                                            Техническое решение
                                                         </td>
                                                         <td style="text-align: center; font-weight: bold;">Объем</td>
                                                         <td style="text-align: center; font-weight: bold;">Ед. изм.</td>
                                                         <td style="text-align: center; font-weight: bold; width: 40%">
-                                                            Техническое решение
+                                                            Наименование работ и конструкций
                                                         </td>
                                                         <td style="text-align: center; font-weight: bold; width: 5%">-</td>
                                                     </tr>
                                                     {% for item in object.get_products %}
                                                         <tr>
                                                             <td>
-                                                                {{ item.name }}
+                                                                {{ item.techsol.name }}
                                                             </td>
                                                             <td style="text-align: right;">{{ item.value }}</td>
                                                             <td style="text-align: center;">{{ item.techsol.measure }}</td>
-                                                            <td>{{ item.techsol.name }}</td>
+                                                            <td>{{ item.name }}</td>
                                                             <td style="text-align: center; font-weight: bold; width: 5%">
                                                                 <a href="{% url 'projects:product_delete' object.pk item.pk %}">
                                                                     <i class="fa fa-trash" aria-hidden="true" style="color: red;"></i>

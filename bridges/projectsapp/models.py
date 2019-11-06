@@ -79,9 +79,6 @@ class Project(models.Model):
         verbose_name = 'Проект'
         verbose_name_plural = 'Проекты'
         default_permissions = ('add', 'change', 'delete')
-        # permissions = (
-        #     ('project_update', 'Update project'),
-        # )
 
 
 def pre_save_map_mark(sender, instance, *args, **kwargs):
