@@ -1,12 +1,18 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
+from productsapp.models import TechnicalSolutions
 from .models import *
 
 
 def services_list(request):
-    # services = Service.objects.all().exclude(is_active=False)
-    context ={
-        # 'service_list': services,
+    services = Service.objects.all().exclude(is_active=False)
+    trainings = services.filter(category__name='Обучение')
+    develops = services.filter(category__name='Разработка')
+    products = TechnicalSolutions.objects.all().order_by('pk')
+    context = {
+        'trainings': trainings,
+        'develops': develops,
+        'products': products,
         'page_title': 'Услуги компании',
         'bred_title': 'Услуги компании',
     }

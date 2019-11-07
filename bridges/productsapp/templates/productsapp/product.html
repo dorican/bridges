@@ -43,20 +43,20 @@
                                     </div>
 
                                     <div class="wprt-spacer" data-desktop="30" data-mobi="25" data-smobi="25"></div>
-                                    {% for item in product_services %}
-                                    <ul class="wprt-list style-2 accent-color margin-bottom-10">
-                                        <li><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></li>
+{#                                    {% for item in product_services %}#}
+{#                                    <ul class="wprt-list style-2 accent-color margin-bottom-10">#}
+{#                                        <li><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></li>#}
 {#                                        <li><strong>Проектировщик:</strong> Richardson and Sandra</li>#}
 {#                                        <li><strong>подрядчик:</strong> GraphicRiver Builder Corporate</li>#}
 {#                                        <li><strong>Бюджет:</strong> $1 250 000,00</li>#}
-                                    </ul>
-                                    {% endfor %}
+{#                                    </ul>#}
+{#                                    {% endfor %}#}
                                     {% if request.user.is_superuser %}
                                     <a href="{% url 'products:product_service_update' product.slug %}">редактировать</a>
                                     {% endif %}
                                     {% if user.is_authenticated %}
                                         <p><a href="{% url 'orders:order_create' product.pk %}"
-                                              class="wprt-button small">Заказать</a></p>
+                                              class="wprt-button small">ЗАКАЗАТЬ</a></p>
                                     {% endif %}
                                 </div><!-- /.col-md-4 -->
 <!--СОСТАВ РАБОТ И МАТЕРИАЛОВ-->
