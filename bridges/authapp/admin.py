@@ -32,10 +32,10 @@ class CompanyAdmin(admin.ModelAdmin):
 @admin.register(Users)
 class UsersAdmin(GuardedModelAdmin):
     # поля, которые не нужно редактировать в админке
-    readonly_fields = ('password', 'is_superuser', 'last_login', 'date_joined')  #'user_permissions', 'groups')
+    readonly_fields = ('password', 'last_login', 'date_joined')  #'user_permissions', 'groups')
 
     # какие поля выводить в админке
-    list_display = ('username', 'first_name', 'last_name', 'is_active', 'is_staff', 'phone', 'email',)
+    list_display = ('username', 'pk', 'first_name', 'last_name', 'is_active', 'is_staff', 'phone', 'email',)
 
     # по каким полям может осуществляться поиск в админке
     search_fields = ('username',
