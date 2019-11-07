@@ -35,12 +35,12 @@ class Project(models.Model):
         (PAYMENT, 'выплата'),
         (DONE, 'завершен'),
     )
-    name = models.CharField(verbose_name='название', max_length=256, unique=True)
+    name = models.CharField(verbose_name='Название проекта', max_length=256, unique=True)
     slug = models.SlugField(verbose_name='слаг', max_length=128, blank=True)
     description = models.TextField(verbose_name='описание', blank=True)
     image = ProcessedImageField(verbose_name='Аватар', upload_to='projects_images/avatars',
                                 processors=[ResizeToFill(530, 530)], default='users/avatar/no_avatar.png', blank=True)
-    status = models.CharField(verbose_name='статус', max_length=24, choices=STATUS_CHOICES)
+    status = models.CharField(verbose_name='Статус', max_length=24, choices=STATUS_CHOICES)
     creation_date = models.DateTimeField(verbose_name='создан', auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(verbose_name='обновлен', auto_now=True)
     city = models.CharField(verbose_name='город', max_length=512, blank=True, null=True)
