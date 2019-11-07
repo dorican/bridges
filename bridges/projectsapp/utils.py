@@ -1,4 +1,5 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
 from authapp.models import Users
@@ -30,11 +31,15 @@ class CreateMixin:
 
     def get(self, request, project_pk):
         project = Project.objects.get(pk=project_pk)
-        form = self.form(initial={"project": project})
-        context = {
-            'form': form
-        }
-        return render(request, template_name=self.template, context=context)
+        if request.user.has_perm('change_project', project):
+            form = self.form(initial={"project": project})
+            context = {
+                'form': form,
+                'project': project
+            }
+            return render(request, template_name=self.template, context=context)
+        else:
+            raise Http404
 
     def post(self, request, project_pk):
         project = Project.objects.get(pk=project_pk)
@@ -58,11 +63,16 @@ class DeleteMixin:
     form_model = None
     template = None
 
-    def get(self, requset, pk):
+    def get(self, requset, project_pk, pk):
+        project = Project.objects.get(pk=project_pk)
         obj = get_object_or_404(self.form_model, pk=pk)
-        return render(requset, self.template, context={'obj': obj})
+        context = {
+            'obj': obj,
+            'project': project
+        }
+        return render(requset, self.template, context=context)
 
-    def post(self, request, pk):
+    def post(self, request, project_pk, pk):
         item = get_object_or_404(self.form_model, pk=pk)
         project = item.project
         item.delete()

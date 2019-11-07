@@ -1,13 +1,19 @@
+import os
+
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save, post_delete
 from django.urls import reverse
 from django.utils.text import slugify
+from guardian.shortcuts import assign_perm, remove_perm
+from imagekit.models import ProcessedImageField
+from pilkit.processors import ResizeToFill
 from transliterate import translit
 from authapp.models import Company, Users
 from productsapp.models import TechnicalSolutions
 
-from imagekit.models.fields import ProcessedImageField
-from imagekit.processors import ResizeToFill
+
+def image_upload_to(instance, filename):
+    return 'projects_images/project_{0}/{1}'.format(instance.project.pk, filename)
 
 
 class Project(models.Model):
@@ -32,9 +38,9 @@ class Project(models.Model):
     name = models.CharField(verbose_name='название', max_length=256, unique=True)
     slug = models.SlugField(verbose_name='слаг', max_length=128, blank=True)
     description = models.TextField(verbose_name='описание', blank=True)
-    image = ProcessedImageField(upload_to='projects_images/avatars', processors=[ResizeToFill(530, 530)], format='JPEG',
-                              options={'quality': 90})
-    status = models.CharField(verbose_name='статус', max_length=24, choices=STATUS_CHOICES, blank=True)
+    image = ProcessedImageField(verbose_name='Аватар', upload_to='projects_images/avatars',
+                                processors=[ResizeToFill(530, 530)], default='users/avatar/no_avatar.png', blank=True)
+    status = models.CharField(verbose_name='статус', max_length=24, choices=STATUS_CHOICES)
     creation_date = models.DateTimeField(verbose_name='создан', auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(verbose_name='обновлен', auto_now=True)
     city = models.CharField(verbose_name='город', max_length=512, blank=True, null=True)
@@ -72,6 +78,7 @@ class Project(models.Model):
         ordering = ('-updated',)
         verbose_name = 'Проект'
         verbose_name_plural = 'Проекты'
+        default_permissions = ('add', 'change', 'delete')
 
 
 def pre_save_map_mark(sender, instance, *args, **kwargs):
@@ -83,18 +90,13 @@ def pre_save_map_mark(sender, instance, *args, **kwargs):
 pre_save.connect(pre_save_map_mark, sender=Project)
 
 
-# СВЯЗАНО
 class ProjectImage(models.Model):
     """ Галерея фотографий для проекта строительства """
-    def get_file_path(self, pk):
-        directory_name = self.project.pk
-        return directory_name
-
     project = models.ForeignKey(Project, blank=True, null=True, default=None, on_delete=models.CASCADE,
                                 related_name="images")
     alt_desc = models.CharField(verbose_name='alt фотографии', max_length=128, blank=True)
-    image = ProcessedImageField(upload_to=get_file_path, processors=[ResizeToFill(530, 530)], format='JPEG',
-                                options={'quality': 90})
+    image = ProcessedImageField(verbose_name='фотографии проекта', upload_to=image_upload_to,
+                                processors=[ResizeToFill(770, 513)], blank=True)
     is_active = models.BooleanField(verbose_name='Показывать', default=True)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
@@ -143,10 +145,10 @@ class ProjectCompany(models.Model):
         (AGENT, 'агент'),
         (PARTNER, 'партнер'),
     )
-    project = models.ForeignKey(Project, blank=True, null=True, default=None, on_delete=models.CASCADE,
+    project = models.ForeignKey(Project, default=None, on_delete=models.CASCADE,
                                 related_name="companies")
-    role = models.CharField(verbose_name='роль в проекте', max_length=24, choices=STATUS_CHOICES, blank=True)
-    company = models.ForeignKey(Company, verbose_name='Выберите компанию', blank=True, null=True, default=None,
+    role = models.CharField(verbose_name='роль в проекте', max_length=24, choices=STATUS_CHOICES)
+    company = models.ForeignKey(Company, verbose_name='Выберите компанию', default=None,
                                 on_delete=models.CASCADE)
     is_active = models.BooleanField(verbose_name='Активный', default=True)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -185,10 +187,9 @@ class ProjectManagers(models.Model):
         (COMMERSANT, 'коммерсант'),
         (ASSISTANT, 'ассистент'),
     )
-    project = models.ForeignKey(Project, verbose_name='проект', on_delete=models.CASCADE, related_name="managers",
-                                blank=True, null=True)
+    project = models.ForeignKey(Project, verbose_name='проект', on_delete=models.CASCADE, related_name="managers", default=0)
     role = models.CharField(verbose_name='роль в проекте', max_length=24, choices=STATUS_CHOICES)
-    manager = models.ForeignKey(Users, verbose_name='Участники', on_delete=models.CASCADE, blank=True, null=True)
+    manager = models.ForeignKey(Users, verbose_name='Участники', on_delete=models.CASCADE, default=None)
     description = models.TextField(verbose_name='комментарий', blank=True)
     is_active = models.BooleanField(verbose_name='Активный', default=True)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -197,6 +198,32 @@ class ProjectManagers(models.Model):
     class Meta:
         verbose_name = 'Участник проекта'
         verbose_name_plural = 'Участники проекта'
+
+
+def project_managers_post_save(sender, instance, created, **kwargs):
+    """
+    Дает права на изменение профиля проекта после появление менеджера в связанной модели.
+    """
+    manager = instance.manager
+    project = instance.project
+    if manager.is_active:
+        assign_perm('projectsapp.change_project', manager, project)
+
+
+post_save.connect(project_managers_post_save, sender=ProjectManagers)
+
+
+def project_managers_post_delete(sender, instance, **kwargs):
+    """
+    Дает права на изменение профиля проекта после появление менеджера в связанной модели.
+    """
+    manager = instance.manager
+    project = instance.project
+    if manager.is_active:
+        remove_perm('projectsapp.change_project', manager, project)
+
+
+post_delete.connect(project_managers_post_delete, sender=ProjectManagers)
 
 
 class ProjectDiscussMember(models.Model):

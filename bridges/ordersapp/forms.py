@@ -1,14 +1,19 @@
 from django import forms
-from ordersapp.models import Order, OrderItem
+
+from ordersapp.models import Order
+from productsapp.models import TechnicalSolutionsHasService
+from servicesapp.models import Service
 
 
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        exclude = ('user', 'status', 'is_active')
+        fields = ['service']
 
-
-class OrderItemForm(forms.ModelForm):
-    class Meta:
-        model = OrderItem
-        exclude = ()
+    def __init__(self, *args, **kwargs):
+        qs = []
+        if 'queryset' in kwargs and kwargs['queryset'] is not None:
+            queryset = kwargs.pop('queryset')
+            qs = Service.objects.filter(technicalsolutionshasservice__technicalsolutions_id=queryset).order_by('name')
+        super(OrderForm, self).__init__(*args, **kwargs)
+        self.fields['service'].queryset = qs

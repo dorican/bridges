@@ -25,11 +25,24 @@ class UsersForEditProfileForm(forms.ModelForm):
             'first_name',
             'patronymic',
             'last_name',
+            'avatar',
+            'description',
             'gender',
             'birthday',
             'phone',
             'email',
             'is_active',
+        ]
+
+
+class UsersSelfEditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Users
+        fields = [
+            'avatar',
+            'description',
+            'birthday',
+            'email',
         ]
 
 

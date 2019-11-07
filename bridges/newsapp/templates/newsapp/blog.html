@@ -1,20 +1,40 @@
 {% extends 'productsapp/base.html' %}
 {% load static %}
 {% block content-container %}
+{#    <!-- Featured Title -->#}
+{#    <div id="featured-title" class="clearfix featured-title-left">#}
+{#        <div id="featured-title-inner" class="container clearfix">#}
+{#            <div class="featured-title-inner-wrap">#}
+{#                <div class="featured-title-heading-wrap">#}
+{#                    <h1 class="featured-title-heading">News</h1>#}
+{#                </div>#}
+{#                <div id="breadcrumbs">#}
+{#                    <div class="breadcrumbs-inner">#}
+{#                        <div class="breadcrumb-trail">#}
+{#                            <a href="#" title="Construction" rel="home" class="trail-begin">Home</a>#}
+{#                            <span class="sep">/</span>#}
+{#                            <span class="trail-end">News</span>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
     <div id="main-content" class="site-main clearfix">
-        <div id="content-wrap" class="container">
+        <div id="content-wrap" class="container" style="display:flex;">
             <div id="site-content" class="site-content clearfix">
                 <div id="inner-content" class="inner-content-wrap">
                     {% for object in object_list %}
                         <article class="hentry">
                             <div class="post-media clearfix">
-                                <a href="#"><img src="/media/{{ object.image }}" alt="image"></a>
+                                <a href="{% url 'news:news_detail' object.pk %}"><img src="/media/{{ object.image }}" style="width:830px" alt="image"></a>
                             </div><!-- /.post-media -->
 
                             <div class="post-content-wrap">
                                 <h2 class="post-title">
                                     <span class="post-title-inner">
-                                        <a href="#">{{ object.name }}</a>
+                                        <a href="{% url 'news:news_detail' object.pk %}">{{ object.name }}</a>
                                     </span>
                                 </h2><!-- /.post-title -->
 
@@ -26,17 +46,19 @@
                                             </span>
 
                                             <span class="post-date item">
-                                                <span class="inner"><span class="entry-date">December 30, 2016</span></span>
+                                                <span class="inner"><span class="entry-date">{{ object.creation_date }}</span></span>
                                             </span>
-
+                                            
                                             <span class="post-comment item">
-                                                <span class="inner"><a href="#">3 Comments</a></span>
+                                                <span class="inner"><a href="#">{{ object.commentsLen }} Comments</a></span>
                                             </span>
+                                            {% comment %}
                                             <span class="post-meta-categories item">
                                                 <span class="inner">
-                                                    {% include 'newsapp/includes/inc_filter.html' %}
+                                                    {% include 'newsapp/includes/inc_news_category.html' %}
                                                 </span>
                                             </span>
+                                            {% endcomment %}
                                         </div>
                                     </div>
                                 </div><!-- /.post-meta -->
@@ -50,7 +72,7 @@
                         </article>
                     {% endfor%}
                     
-
+                    {% comment %}
                     <div class="wprt-pagination clearfix">
                         <ul class="page-numbers">
                             <li><span class="page-numbers current">1</span></li>
@@ -58,6 +80,7 @@
                             <li><a class="next page-numbers" href="#"><span class="fa fa-angle-right"></span></a></li>
                         </ul>
                     </div>
+                    {% endcomment %}
                 </div><!-- /.inner-content-wrap -->
             </div><!-- /#site-content -->
 
@@ -73,13 +96,26 @@
                     <div class="widget widget_categories">
                         <h2 class="widget-title"><span>CATEGORIES</span></h2>
                         <ul>
-                            {% include 'projectsapp/includes/inc__projects_filter.html' %}
+                            {% include 'newsapp/includes/inc_filter.html' %}
                         </ul>
                     </div>
 
                     <div id="widget_news_post-3" class="widget widget_recent_news">
                         <h2 class="widget-title"><span>LASTEST NEWS</span></h2>
                         <ul class="recent-news clearfix">
+                            {% for object in latest_news %}
+                                <li class="clearfix">
+                                    <div class="thumb">
+                                        <img width="150" height="150" src="/media/{{ object.image }}" alt="image">
+                                    </div><!-- /.thumb -->
+
+                                    <div class="texts">
+                                        <h3><a href="{% url 'news:news_detail' object.pk %}">{{ object.name }}</a></h3>
+                                        <span class="post-date"><span class="entry-date">{{ object.creation_date }}</span></span>
+                                    </div><!-- /.texts -->
+                                </li>
+                            {% endfor %}
+                            {% comment %}
                             <li class="clearfix">
                                 <div class="thumb">
                                     <img width="150" height="150" src="{% static 'assets/img/news/1s.jpg' %}" alt="image">
@@ -112,17 +148,14 @@
                                     <span class="post-date"><span class="entry-date">December 30, 2016</span></span>
                                 </div><!-- /.texts -->
                             </li>
+                            {% endcomment %}
                         </ul>
                     </div>
 
                     <div class="widget widget_tag_cloud">
                         <h2 class="widget-title"><span>TAGS CLOUD</span></h2>
                         <div class="tagcloud">
-                            <a href="#">Buildings</a>
-                            <a href="#">Architectural</a>
-                            <a href="#">Interior</a>
-                            <a href="#">Construction</a>
-                            <a href="#">Smart House</a>
+                            {% include 'newsapp/includes/inc_afilter.html' %}
                         </div>
                     </div>
                 </div><!-- /#inner-sidebar -->
