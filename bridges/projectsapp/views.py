@@ -72,6 +72,10 @@ class ProjectCreateView(CreateView):
     model = Project
     form_class = ProjectUpdateForm
     template_name = 'projectsapp/gallery_update.html'
+    extra_context = {
+        'page_title': 'Создать новый проект',
+        'bred_title': 'Новый проект'
+    }
 
 
 def project_update(request, pk):
