@@ -16,13 +16,11 @@
                                     <!--КРАТКОЕ ОПИСАНИЕ-->
                                     <div class="col-md-8">
                                         <div>
-                                            <h1 class="line-height-normal margin-bottom-10">Название
-                                                компании: {{ partner.name }}</h1>
-                                            <p>
-                                                <a href="{% url 'partners:partner_delete' partner.pk %}">... удалить
-                                                    компанию</a>
-
-                                            </p>
+                                            <h2 class="line-height-normal margin-bottom-10">{{ partner.form }} {{ partner.name }}</h2>
+                                        <div class="wprt-lines style-1 custom-3">
+                                            <div class="line-1"></div>
+                                            <div class="line-2"></div>
+                                        </div>
                                             <p></p>
                                             <h3 class="line-height-normal margin-bottom-10">ПРОЕКТЫ КОМПАНИИ</h3>
                                             <div class="wprt-lines style-1 custom-3">
@@ -43,8 +41,7 @@
                                                     </ul>
                                                 {% endfor %}
                                             {% else %}
-                                                <p>Компания {{ partner.name }} не участвовала ни в одном
-                                                    проекте.</p>
+                                                <p>Нет ни одного проекта.</p>
                                             {% endif %}
                                         </div>
                                     </div><!-- /.col-md-8 -->
@@ -78,13 +75,11 @@
                                              data-smobi="25"></div>
 
                                         <div>
-                                            <h2 class="line-height-normal margin-bottom-10">ИССЛЕДОВАНИЯ И
-                                                ДОКУМЕНТАЦИЯ</h2>
-                                        </div>
-                                        <div class="wprt-lines style-1 custom-3">
-                                            <div class="line-1"></div>
-                                            <div class="line-2"></div>
-                                        </div>
+                                            <h3 class="line-height-normal margin-bottom-10">ДОКУМЕНТАЦИЯ</h3>
+                                            <div class="wprt-lines style-1 custom-3">
+                                                <div class="line-1"></div>
+                                                <div class="line-2"></div>
+                                            </div>
                                         <div class="wprt-spacer" data-desktop="30" data-mobi="25"
                                              data-smobi="25"></div>
                                         <div class="col-md-6 row">
@@ -105,8 +100,7 @@
                                                     </div>
                                                 {% endfor %}
                                             {% else %}
-                                                <p>Компания {{ partner.name }} не выпустила ни одного исследования и
-                                                    документации.</p>
+                                                <p>Нет ни одного документа.</p>
                                             {% endif %}
                                         </div>
                                     </div><!-- /.col-md-12 -->
