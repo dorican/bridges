@@ -41,9 +41,11 @@
                                 </div>
                                 {% if request.user.is_staff %}
                                     {% if user.is_active %}
-                                        <a class="wprt-button small" href="{% url 'profile_user_update' user.pk %}">
-                                        редактировать профиль пользователя
-                                        </a>
+                                        {% if request.user.is_superuser %}
+                                            <a class="wprt-button small" href="{% url 'profile_user_update' user.pk %}">
+                                            редактировать профиль пользователя
+                                            </a>
+                                        {% endif %}
                                     {% else %}
                                         <a class="wprt-button icon-flash delete-button" href="{% url 'profile_user_activate' user.pk %}">
                                         активировать пользователя
