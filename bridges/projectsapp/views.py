@@ -29,10 +29,7 @@ class ProjectsList(ListView):
         if self.request.user.is_staff:
             return Project.objects.all()
         else:
-            return Project.objects.filter(
-                Q(status__exact='завершен') |
-                Q(managers__manager_id=self.request.user.pk)
-            )
+            return Project.objects.filter(status__iexact='завершен')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -91,7 +88,7 @@ def project_update(request, pk):
             'project_form': project_form,
             'page_title': 'Редактирование основной информации',
             'bred_title': 'Обновление проекта',
-            'project': project
+            'project': project,
         }
         return render(request, 'projectsapp/gallery_update.html', context)
     else:
