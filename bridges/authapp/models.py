@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import post_save
 from django.urls import reverse
+from guardian.shortcuts import assign_perm
 from imagekit.models import ProcessedImageField
 from pilkit.processors import ResizeToFill
 
@@ -96,9 +98,7 @@ class Users(AbstractUser):
     class Meta(AbstractUser.Meta):
         verbose_name = "Пользователь"
         ordering = ['-date_joined']
-        permissions = (
-            ('can_change', 'Изменение профиля'),
-        )
+        default_permissions = ('add', 'change', 'delete')
 
     def get_self_absolute_url(self):
         return reverse('restricted_area')
@@ -114,6 +114,18 @@ class Users(AbstractUser):
             return str(f"{self.first_name} {self.patronymic} {self.last_name}")
         else:
             return str(f"{self.first_name} {self.last_name}")
+
+
+def user_post_save(sender, instance, created, **kwargs):
+    """
+    Дает права на изменение профиля проекта после появление менеджера в связанной модели.
+    """
+    users = instance
+    if Users:
+        assign_perm('authapp.change_users', users, users)
+
+
+post_save.connect(user_post_save, sender=Users)
 
 
 class CompanyUsers(models.Model):

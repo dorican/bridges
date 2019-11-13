@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import Group
 from django.forms import inlineformset_factory, modelformset_factory
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
 from guardian.decorators import permission_required, permission_required_or_403
 from guardian.shortcuts import assign_perm
@@ -51,17 +51,21 @@ def register(request):
 
 
 def user_profile(request, pk):
-    user_companies = CompanyUsers.objects.filter(user_id=pk, works=True)
     user = get_object_or_404(Users, pk=pk)
-    user_projects = ProjectManagers.objects.filter(manager_id=pk).order_by('-project__updated')
-    context = {
-        'user': user,
-        'user_projects': user_projects,
-        'user_companies': user_companies,
-        'page_title': 'Профиль пользователя',
-        'bred_title': 'Профиль пользователя'
-    }
-    return render(request, 'authapp/user_profile.html', context)
+    if request.user.pk == user.pk:
+        return HttpResponseRedirect(user.get_self_absolute_url())
+    else:
+        user_companies = CompanyUsers.objects.filter(user_id=pk, works=True)
+        user = get_object_or_404(Users, pk=pk)
+        user_projects = ProjectManagers.objects.filter(manager_id=pk).order_by('-project__updated')
+        context = {
+            'user': user,
+            'user_projects': user_projects,
+            'user_companies': user_companies,
+            'page_title': 'Профиль пользователя',
+            'bred_title': 'Профиль пользователя'
+        }
+        return render(request, 'authapp/user_profile.html', context)
 
 
 def company_self_user_update(request, pk):
@@ -156,22 +160,24 @@ def profile_self_user_update(request, pk):
 #     return render(request, 'authapp/user_profile_update.html', context)
 
 
-@permission_required('authapp.can_change')
 def profile_user_update(request, pk):
     user = get_object_or_404(Users, pk=pk)
-    user_form = UsersForEditProfileForm(instance=user)
-    if request.method == 'POST':
-        user_form = UsersForEditProfileForm(request.POST, instance=user)
-        if user_form.is_valid():
-            user_form.save()
-            return HttpResponseRedirect(user.get_absolute_url())
-    context = {
-        'form': user_form,
-        'form_user': user,
-        'page_title': 'Редактор профиля пользователя',
-        'bred_title': 'Редактор профиля пользователя'
-    }
-    return render(request, 'authapp/user_profile_update.html', context)
+    if request.user.has_perm('change_users', user):
+        user_form = UsersForEditProfileForm(instance=user)
+        if request.method == 'POST':
+            user_form = UsersForEditProfileForm(request.POST, instance=user)
+            if user_form.is_valid():
+                user_form.save()
+                return HttpResponseRedirect(user.get_absolute_url())
+        context = {
+            'form': user_form,
+            'form_user': user,
+            'page_title': 'Редактор профиля пользователя',
+            'bred_title': 'Редактор профиля пользователя'
+        }
+        return render(request, 'authapp/user_profile_update.html', context)
+    else:
+        raise Http404
 
 
 @user_passes_test(lambda u: u.is_staff)
