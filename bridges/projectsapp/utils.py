@@ -63,14 +63,17 @@ class DeleteMixin:
     form_model = None
     template = None
 
-    def get(self, requset, project_pk, pk):
+    def get(self, request, project_pk, pk):
         project = Project.objects.get(pk=project_pk)
-        obj = get_object_or_404(self.form_model, pk=pk)
-        context = {
-            'obj': obj,
-            'project': project
-        }
-        return render(requset, self.template, context=context)
+        if request.user.has_perm('change_project', project):
+            obj = get_object_or_404(self.form_model, pk=pk)
+            context = {
+                'obj': obj,
+                'project': project
+            }
+            return render(request, self.template, context=context)
+        else:
+            raise Http404
 
     def post(self, request, project_pk, pk):
         item = get_object_or_404(self.form_model, pk=pk)

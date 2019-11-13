@@ -7,60 +7,60 @@
             <div id="site-content" class="site-content clearfix">
                 <div id="inner-content" class="inner-content-wrap">
                     <div class="page-content">
-                        <section class="wprt-section">
-                            <div class="container">
-                                <div class="wprt-spacer" data-desktop="40" data-mobi="40" data-smobi="40"></div>
-
-
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <a href="{% url 'partners:partner_create' %}" class="btn btn-success">добавить компанию</a>
-                                    </div>
-{#                                        <div class="d1">#}
-{#                                            <form action="{% url 'partners:company_search' %}" method="get">#}
-{#                                                <input name="q" placeholder="Искать компанию" type="search">#}
-{#                                                <button type="submit"></button>#}
-{#                                            </form>#}
-{#                                        </div>#}
-                                    </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="wprt-spacer" data-desktop="40" data-mobi="40" data-smobi="40"></div>
-                                    </div><!-- /.col-md-12 -->
+                    <div class="wprt-spacer" data-desktop="25" data-mobi="25" data-smobi="25"></div>
+                        <div id="content-wrap" class="container">
+                            <article class="hentry">
+                                <div class="post-content-wrap">
+                                    <h2 class="post-title">
+                                        <span class="post-title-inner">
+                                            <a href="#">КОНТРАГЕНТЫ</a><a href="{% url 'partners:partner_create' %}">
+                                                <i class="fa fa-plus" aria-hidden="true"
+                                                   style="color: #337ab7; font-size: 16px"></i>
+                                            </a>
+                                        </span>
+                                        <div class="wprt-lines style-1 custom-3">
+                                            <div class="line-1"></div>
+                                            <div class="line-2"></div>
+                                        </div>
+                                    </h2><!-- /.post-title -->
                                     {% for item in partners %}
-                                        <div class="col-md-4">
-                                            <div class="service-item clearfix">
-                                                <div class="thumb">
-                                                    <img style="height: 100px;"
-                                                         src="/media/{{ item.logo|default:"logo_company/no_logo.jpg" }}"
-                                                         alt="{{ item.name }}"/>
-                                                </div>
-                                                <div class="service-item-wrap">
-                                                    <h3 class="title font-size-18"><a
-                                                            href="{% url 'partners:partner_detail' item.pk %}">{{ item.name }}</a>
-                                                    </h3>
-                                                    <p class="desc"><strong>Категория
-                                                        компании:</strong> {{ item.category }}</p>
-                                                    <p class="desc"><strong>ИНН:</strong> {{ item.inn }}</p>
-                                                    <a href="{% url 'partners:partner_detail' item.pk %}"
-                                                       class="wprt-button small rounded-3px">Подробнее</a>
+                                        <div class="post-meta style-2">
+                                            <div class="post-meta-content">
+                                                <div class="post-meta-content-inner">
+                                    <span class="post-by-author item">
+                                        <strong>
+                                        <span class="inner">
+                                            <a href="{{ item.get_absolute_url }}" title="" rel="author">
+                                                {{ item.name }} {{ item.form.name }}
+                                            </a>
+                                        </span>
+                                        </strong>
+                                    </span>
+                                                    <span class="post-date item">
+                                        <span class="inner"><span
+                                                class="entry-date">{{ item.category.name }}</span></span>
+                                    </span>
+                                                    <span class="post-date item">
+                                        <span class="inner"><span
+                                                class="entry-date">ИНН {{ item.inn }}</span></span>
+                                    </span>
+                                                    <span class="post-date item">
+                                        <span class="inner"><span
+                                                class="entry-date">Создан: {{ item.created|date:'d.m.Y' }}</span></span>
+                                    </span>
+                                                    <span class="post-comment item">
+                                        <span class="inner">
+                                            <span class="entry-date">Обновлен: {{ item.updated|date:'d.m.Y' }}</span>
+                                        </span>
+                                    </span>
                                                 </div>
                                             </div>
-
-                                            <div class="wprt-spacer" data-desktop="55" data-mobi="40"
-                                                 data-smobi="40"></div>
-                                            {##}
-                                            {#                                            <div class="wprt-spacer" data-desktop="0" data-mobi="40"#}
-                                            {#                                                 data-smobi="40"></div>#}
-                                        </div><!-- /.col-md-4 -->
+                                        </div><!-- /.post-meta -->
                                     {% endfor %}
-                                    <div class="col-md-12">
-                                        <div class="wprt-spacer" data-desktop="80" data-mobi="60" data-smobi="60"></div>
-                                    </div><!-- /.col-md-12 -->
-                                </div><!-- /.row -->
-                            </div><!-- /.container -->
-                        </section>
+
+                                </div><!-- /.post-content-wrap -->
+                            </article>
+                        </div>
 
                     </div>
                 </div>

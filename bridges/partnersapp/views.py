@@ -12,7 +12,7 @@ from researchapp.models import Document
 
 @user_passes_test(lambda u: u.is_staff)
 def partners_list(request):
-    partners = Company.objects.all()
+    partners = Company.objects.all().order_by('name')
     context = {
         'partners': partners,
         'page_title': 'Партнеры компании',

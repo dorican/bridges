@@ -54,6 +54,8 @@ class Company(models.Model):
     address = models.CharField(verbose_name='Адрес', max_length=300, default='', null=True, blank=True)
     phone = models.CharField(verbose_name='Телефон', max_length=30, default='', null=True, blank=True)
     email = models.CharField(verbose_name='Эл. почта', max_length=30, default='', null=True, blank=True)
+    created = models.DateTimeField(verbose_name='создан', auto_now_add=True, auto_now=False)
+    updated = models.DateTimeField(verbose_name='обновлен', auto_now=True)
 
     class Meta:
         verbose_name = "Новую компанию"
