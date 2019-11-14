@@ -50,13 +50,13 @@
                             <span class="{% if request.resolver_match.url_name == 'research' %}active{% endif %}">Наука</span>
                         </a>
                     </li>
-                    {% if request.user.is_staff %}
-                        <li class="menu-item">
-                            <a href="{% url 'partners:partners_list' %}" class="active">
-                                <span class="{% if request.resolver_match.url_name == 'partners_list' %}active{% endif %}">Партнеры</span>
-                            </a>
-                        </li>
-                    {% endif %}
+{#                    {% if request.user.is_staff %}#}
+{#                        <li class="menu-item">#}
+{#                            <a href="{% url 'partners:partners_list' %}" class="active">#}
+{#                                <span class="{% if request.resolver_match.url_name == 'partners_list' %}active{% endif %}">Партнеры</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                    {% endif %}#}
                 </ul>
             </nav><!-- /#main-nav -->
             {#ГЛАВНОЕ МЕНЮ#}
