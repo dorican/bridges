@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib import admin
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -70,6 +72,9 @@ class Company(models.Model):
     def get_absolute_url(self):
         return reverse('partners:partner_detail', args=[str(self.id)])
 
+    def get_employees(self):
+        return self.employees.select_related()
+
 
 class Users(AbstractUser):
     """ модель содержит информацию о всех пользователях, включая superuser, сотрудников компании
@@ -109,11 +114,15 @@ class Users(AbstractUser):
     def get_company(self):
         return self.company.select_related()
 
+    # def get_last_login(self):
+    #     login_l = datetime.datetime.now() - self.last_login
+    #     if login_l < 600:
+
     def __str__(self):
         if self.patronymic:
-            return str(f"{self.first_name} {self.patronymic} {self.last_name}")
+            return str(f"{self.last_name} {self.first_name} {self.patronymic}")
         else:
-            return str(f"{self.first_name} {self.last_name}")
+            return str(f"{self.last_name} {self.first_name}")
 
 
 def user_post_save(sender, instance, created, **kwargs):
@@ -129,7 +138,7 @@ post_save.connect(user_post_save, sender=Users)
 
 
 class CompanyUsers(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.PROTECT, verbose_name='Компания')
+    company = models.ForeignKey(Company, on_delete=models.PROTECT, verbose_name='Компания', related_name='employees')
     user = models.ForeignKey(Users, on_delete=models.PROTECT, verbose_name='Сотрудник', related_name='company')
     position = models.CharField(verbose_name='Должность', max_length=50, blank=True)
     works = models.BooleanField(verbose_name='Работает в компании', default=True, null=True)

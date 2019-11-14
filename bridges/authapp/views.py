@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import Group
+from django.db.models import Q
 from django.forms import inlineformset_factory, modelformset_factory
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
@@ -24,6 +25,14 @@ def restricted_area(request):
     user_companies = CompanyUsers.objects.filter(user_id=user.pk, works=True)
     user_projects = ProjectManagers.objects.filter(manager_id=user.pk).order_by('-project__updated')
     user_orders = Order.objects.filter(user_id=user.pk)
+    if user.is_staff:
+        partners = Company.objects.all().order_by('name')
+        users = Users.objects.all().order_by('last_name').exclude(
+            Q(is_staff=True) |
+            Q(username='AnonymousUser'))
+    else:
+        partners = user_companies
+        users = Users.objects.filter(is_staff=True).exclude(is_superuser=True)
     context = {
         'section': 'restricted_area',
         'page_title': 'Личный кабинет',
@@ -31,7 +40,9 @@ def restricted_area(request):
         'user_companies': user_companies,
         'user_projects': user_projects,
         'user_orders': user_orders,
-        'inactive_users': get_inactive_users(request)
+        'inactive_users': get_inactive_users(request),
+        'partners': partners,
+        'users': users
     }
     return render(request, 'authapp/restricted_area.html', context)
 
